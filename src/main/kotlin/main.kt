@@ -16,6 +16,9 @@ fun main() {
             }
         }
 
+        // Ordenando números na lista
+        numerosQueSeraoSorteadosLotofacil.sort()
+
         val sb = StringBuilder()
         for (x in 0 until numerosQueSeraoSorteadosLotofacil.size) {
             val umAnove = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
