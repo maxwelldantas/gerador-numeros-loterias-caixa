@@ -1,41 +1,39 @@
 import java.io.File
-import java.lang.StringBuilder
 import java.time.LocalDateTime
-import kotlin.collections.ArrayList
 
-class Lotofacil {
+class MegaSena {
 
-    val numeros = (1..25)
-    val numerosQueSeraoSorteadosLotofacil: ArrayList<Int> = ArrayList()
+    val numeros = (1..60)
+    val numerosQueSeraoSorteadosMegaSena: ArrayList<Int> = ArrayList()
 
     companion object {
-        fun jogosLotofacil(quantidadeJogos: Int) {
+        fun jogosMegaSena(quantidadeJogos: Int) {
             val jogosParaGravar = StringBuilder()
 
             for (j in 1 until (quantidadeJogos + 1)) {
-                val lotofacil = Lotofacil()
-                val numerosQueSeraoSorteadosLotofacil = lotofacil.numerosQueSeraoSorteadosLotofacil
-                while (numerosQueSeraoSorteadosLotofacil.size != 15) {
-                    val x = lotofacil.numeros.random().toString().toInt()
-                    if (!numerosQueSeraoSorteadosLotofacil.contains(x)) {
-                        numerosQueSeraoSorteadosLotofacil.add(x)
+                val megaSena = MegaSena()
+                val numerosQueSeraoSorteadosMegaSena = megaSena.numerosQueSeraoSorteadosMegaSena
+                while (numerosQueSeraoSorteadosMegaSena.size != 6) {
+                    val x = megaSena.numeros.random().toString().toInt()
+                    if (!numerosQueSeraoSorteadosMegaSena.contains(x)) {
+                        numerosQueSeraoSorteadosMegaSena.add(x)
                     }
                 }
 
                 // Ordenando números na lista
-                numerosQueSeraoSorteadosLotofacil.sort()
+                numerosQueSeraoSorteadosMegaSena.sort()
 
                 val sb = StringBuilder()
-                for (x in 0 until numerosQueSeraoSorteadosLotofacil.size) {
+                for (x in 0 until numerosQueSeraoSorteadosMegaSena.size) {
                     val umAnove = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
-                    if (umAnove.contains(numerosQueSeraoSorteadosLotofacil[x])) {
-                        sb.append("0${numerosQueSeraoSorteadosLotofacil[x]}")
-                        if (x != numerosQueSeraoSorteadosLotofacil.size - 1) {
+                    if (umAnove.contains(numerosQueSeraoSorteadosMegaSena[x])) {
+                        sb.append("0${numerosQueSeraoSorteadosMegaSena[x]}")
+                        if (x != numerosQueSeraoSorteadosMegaSena.size - 1) {
                             sb.append(" ")
                         }
                     } else {
-                        sb.append("${numerosQueSeraoSorteadosLotofacil[x]}")
-                        if (x != numerosQueSeraoSorteadosLotofacil.size - 1) {
+                        sb.append("${numerosQueSeraoSorteadosMegaSena[x]}")
+                        if (x != numerosQueSeraoSorteadosMegaSena.size - 1) {
                             sb.append(" ")
                         }
                     }
@@ -47,7 +45,7 @@ class Lotofacil {
 
             gravarJogos(jogosParaGravar)
 
-            val valorJogos = 2.50F * quantidadeJogos
+            val valorJogos = 4.50F * quantidadeJogos
             println("Custo para realizar este(s) jogo(s): R$ $valorJogos")
 
             if (valorJogos >= 30.0) {
@@ -66,7 +64,7 @@ class Lotofacil {
             val minuto = LocalDateTime.now().minute
             val segundo = LocalDateTime.now().second
             val dataHorario = "$dia-$mes-$ano-${hora}h${minuto}m${segundo}s"
-            File("Apostas-Lotofacil-$dataHorario.txt").writeText(sb.toString())
+            File("Apostas-Mega-Sena-$dataHorario.txt").writeText(sb.toString())
         }
     }
 }
