@@ -1,4 +1,5 @@
 import java.io.File
+import java.time.Instant
 import java.time.LocalDateTime
 
 class MegaSena {
@@ -14,9 +15,9 @@ class MegaSena {
                 val megaSena = MegaSena()
                 val numerosQueSeraoSorteadosMegaSena = megaSena.numerosQueSeraoSorteadosMegaSena
                 while (numerosQueSeraoSorteadosMegaSena.size != 6) {
-                    val x = megaSena.numeros.random().toString().toInt()
-                    if (!numerosQueSeraoSorteadosMegaSena.contains(x)) {
-                        numerosQueSeraoSorteadosMegaSena.add(x)
+                    val numeroAleatorio = megaSena.numeros.random().toString().toInt() * ((Instant.now().nano / 10000000) * 2)
+                    if ((numeroAleatorio in (1..60)) && !numerosQueSeraoSorteadosMegaSena.contains(numeroAleatorio)) {
+                        numerosQueSeraoSorteadosMegaSena.add(numeroAleatorio)
                     }
                 }
 
