@@ -1,7 +1,6 @@
 import java.io.File
-import java.lang.StringBuilder
+import java.time.Instant
 import java.time.LocalDateTime
-import kotlin.collections.ArrayList
 
 class Lotofacil {
 
@@ -16,9 +15,10 @@ class Lotofacil {
                 val lotofacil = Lotofacil()
                 val numerosQueSeraoSorteadosLotofacil = lotofacil.numerosQueSeraoSorteadosLotofacil
                 while (numerosQueSeraoSorteadosLotofacil.size != 15) {
-                    val x = lotofacil.numeros.random().toString().toInt()
-                    if (!numerosQueSeraoSorteadosLotofacil.contains(x)) {
-                        numerosQueSeraoSorteadosLotofacil.add(x)
+                    val numeroAleatorio =
+                        lotofacil.numeros.random().toString().toInt() * (((Instant.now().nano / 10000000) * 2) / 5)
+                    if ((numeroAleatorio in (1..25)) && !numerosQueSeraoSorteadosLotofacil.contains(numeroAleatorio)) {
+                        numerosQueSeraoSorteadosLotofacil.add(numeroAleatorio)
                     }
                 }
 
