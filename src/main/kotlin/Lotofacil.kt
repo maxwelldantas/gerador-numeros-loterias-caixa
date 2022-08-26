@@ -16,7 +16,7 @@ class Lotofacil {
                 val numerosQueSeraoSorteadosLotofacil = lotofacil.numerosQueSeraoSorteadosLotofacil
                 while (numerosQueSeraoSorteadosLotofacil.size != 15) {
                     val numeroAleatorio =
-                        lotofacil.numeros.random().toString().toInt() * (((Instant.now().nano / 10000000) * 2) / 5)
+                        lotofacil.numeros.random().toString().toInt()
                     if ((numeroAleatorio in (1..25)) && !numerosQueSeraoSorteadosLotofacil.contains(numeroAleatorio)) {
                         numerosQueSeraoSorteadosLotofacil.add(numeroAleatorio)
                     }
