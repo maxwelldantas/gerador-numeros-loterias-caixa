@@ -1,0 +1,6 @@
+Jogo número 1: 02 32 36 38 44 52
+Jogo número 2: 08 12 20 24 48 52
+Jogo número 3: 12 16 20 24 28 32
+Jogo número 4: 04 12 28 40 48 52
+Jogo número 5: 08 12 20 32 44 56
+Jogo número 6: 04 12 24 36 44 56
