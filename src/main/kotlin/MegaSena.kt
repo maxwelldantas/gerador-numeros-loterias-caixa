@@ -46,7 +46,7 @@ class MegaSena {
 
             gravarJogos(jogosParaGravar)
 
-            val valorJogos = 4.50F * quantidadeJogos
+            val valorJogos = 5 * quantidadeJogos
             println("Custo para realizar este(s) jogo(s): R$ $valorJogos")
 
             if (valorJogos >= 30.0) {

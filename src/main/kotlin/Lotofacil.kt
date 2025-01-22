@@ -1,5 +1,4 @@
 import java.io.File
-import java.time.Instant
 import java.time.LocalDateTime
 
 class Lotofacil {
@@ -47,7 +46,7 @@ class Lotofacil {
 
             gravarJogos(jogosParaGravar)
 
-            val valorJogos = 2.50F * quantidadeJogos
+            val valorJogos = 3 * quantidadeJogos
             println("Custo para realizar este(s) jogo(s): R$ $valorJogos")
 
             if (valorJogos >= 30.0) {
