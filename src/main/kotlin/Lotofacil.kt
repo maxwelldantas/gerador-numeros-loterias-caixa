@@ -1,72 +1,49 @@
 import java.io.File
-import java.time.Instant
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class Lotofacil {
+object Lotofacil {
+    private const val VALOR_JOGO = 3.5
+    private const val VALOR_MINIMO_ONLINE = 30.0
+    private val NUMEROS_POSSIVEIS = (1..25).toList()
 
-    val numeros = (1..25)
-    val numerosQueSeraoSorteadosLotofacil: ArrayList<Int> = ArrayList()
-
-    companion object {
-        fun jogosLotofacil(quantidadeJogos: Int) {
-            val jogosParaGravar = StringBuilder()
-
-            for (j in 1 until (quantidadeJogos + 1)) {
-                val lotofacil = Lotofacil()
-                val numerosQueSeraoSorteadosLotofacil = lotofacil.numerosQueSeraoSorteadosLotofacil
-                while (numerosQueSeraoSorteadosLotofacil.size != 15) {
-                    val numeroAleatorio =
-                        lotofacil.numeros.random().toString().toInt() * (((Instant.now().nano / 10000000) * 2) / 5)
-                    if ((numeroAleatorio in (1..25)) && !numerosQueSeraoSorteadosLotofacil.contains(numeroAleatorio)) {
-                        numerosQueSeraoSorteadosLotofacil.add(numeroAleatorio)
-                    }
-                }
-
-                // Ordenando números na lista
-                numerosQueSeraoSorteadosLotofacil.sort()
-
-                val sb = StringBuilder()
-                for (x in 0 until numerosQueSeraoSorteadosLotofacil.size) {
-                    val umAnove = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
-                    if (umAnove.contains(numerosQueSeraoSorteadosLotofacil[x])) {
-                        sb.append("0${numerosQueSeraoSorteadosLotofacil[x]}")
-                        if (x != numerosQueSeraoSorteadosLotofacil.size - 1) {
-                            sb.append(" ")
-                        }
-                    } else {
-                        sb.append("${numerosQueSeraoSorteadosLotofacil[x]}")
-                        if (x != numerosQueSeraoSorteadosLotofacil.size - 1) {
-                            sb.append(" ")
-                        }
-                    }
-                }
-                print("Jogo número $j: ")
-                println(sb)
-                jogosParaGravar.append("Jogo número $j: ".plus(sb.append("\n")))
+    fun gerarJogos(quantidadeJogos: Int) {
+        val jogosGerados = (1..quantidadeJogos).map { indice ->
+            val numerosSorteados = NUMEROS_POSSIVEIS.shuffled().take(15).sorted()
+            val jogoFormatado = numerosSorteados.joinToString(" ") { numero ->
+                "%02d".format(numero)
             }
-
-            gravarJogos(jogosParaGravar)
-
-            val valorJogos = 2.50F * quantidadeJogos
-            println("Custo para realizar este(s) jogo(s): R$ $valorJogos")
-
-            if (valorJogos >= 30.0) {
-                println("Com este custo estes jogos podem ser apostados na Loterias CAIXA online")
-            } else {
-                println("Com este custo este(s) jogo(s) não pode(m) ser apostado(s) na Loterias CAIXA online")
-            }
+            "Jogo número $indice: $jogoFormatado"
         }
 
-        private fun gravarJogos(sb: StringBuilder) {
-            sb.setLength(sb.length - 1)
-            val dia = LocalDateTime.now().dayOfMonth
-            val mes = LocalDateTime.now().monthValue
-            val ano = LocalDateTime.now().year
-            val hora = LocalDateTime.now().hour
-            val minuto = LocalDateTime.now().minute
-            val segundo = LocalDateTime.now().second
-            val dataHorario = "$dia-$mes-$ano-${hora}h${minuto}m${segundo}s"
-            File("Apostas-Lotofacil-$dataHorario.txt").writeText(sb.toString())
+        val conteudoArquivo = jogosGerados.joinToString("\n")
+
+        println(conteudoArquivo)
+
+        gravarJogos(conteudoArquivo)
+
+        val custoTotal = VALOR_JOGO * quantidadeJogos
+        println("\nCusto para realizar este(s) jogo(s): R$ %.2f".format(custoTotal))
+
+        if (custoTotal >= VALOR_MINIMO_ONLINE) {
+            println("Com este custo, estes jogos podem ser apostados na Loterias CAIXA online.")
+        } else {
+            println("Com este custo, este(s) jogo(s) não pode(m) ser apostado(s) na Loterias CAIXA online.")
+        }
+    }
+
+    private fun gravarJogos(conteudo: String) {
+        try {
+            val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy-HH'h'mm'm'ss's'"))
+            val arquivo = File("apostas/Apostas-Lotofacil-$timestamp.txt")
+
+            arquivo.parentFile.mkdirs()
+
+            arquivo.writeText(conteudo)
+            println("Jogos gravados com sucesso em: ${arquivo.absolutePath}")
+        } catch (e: Exception) {
+            println("Ocorreu um erro ao gravar o arquivo: ${e.message}")
+            e.printStackTrace()
         }
     }
 }

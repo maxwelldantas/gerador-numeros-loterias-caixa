@@ -1,71 +1,50 @@
 import java.io.File
-import java.time.Instant
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class MegaSena {
+object MegaSena {
 
-    val numeros = (1..60)
-    val numerosQueSeraoSorteadosMegaSena: ArrayList<Int> = ArrayList()
+    private const val VALOR_JOGO = 6.0
+    private const val VALOR_MINIMO_ONLINE = 30.0
+    private val NUMEROS_POSSIVEIS = (1..60).toList()
 
-    companion object {
-        fun jogosMegaSena(quantidadeJogos: Int) {
-            val jogosParaGravar = StringBuilder()
-
-            for (j in 1 until (quantidadeJogos + 1)) {
-                val megaSena = MegaSena()
-                val numerosQueSeraoSorteadosMegaSena = megaSena.numerosQueSeraoSorteadosMegaSena
-                while (numerosQueSeraoSorteadosMegaSena.size != 6) {
-                    val numeroAleatorio = megaSena.numeros.random().toString().toInt() * ((Instant.now().nano / 10000000) * 2)
-                    if ((numeroAleatorio in (1..60)) && !numerosQueSeraoSorteadosMegaSena.contains(numeroAleatorio)) {
-                        numerosQueSeraoSorteadosMegaSena.add(numeroAleatorio)
-                    }
-                }
-
-                // Ordenando números na lista
-                numerosQueSeraoSorteadosMegaSena.sort()
-
-                val sb = StringBuilder()
-                for (x in 0 until numerosQueSeraoSorteadosMegaSena.size) {
-                    val umAnove = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
-                    if (umAnove.contains(numerosQueSeraoSorteadosMegaSena[x])) {
-                        sb.append("0${numerosQueSeraoSorteadosMegaSena[x]}")
-                        if (x != numerosQueSeraoSorteadosMegaSena.size - 1) {
-                            sb.append(" ")
-                        }
-                    } else {
-                        sb.append("${numerosQueSeraoSorteadosMegaSena[x]}")
-                        if (x != numerosQueSeraoSorteadosMegaSena.size - 1) {
-                            sb.append(" ")
-                        }
-                    }
-                }
-                print("Jogo número $j: ")
-                println(sb)
-                jogosParaGravar.append("Jogo número $j: ".plus(sb.append("\n")))
+    fun gerarJogos(quantidadeJogos: Int) {
+        val jogosGerados = (1..quantidadeJogos).map { indice ->
+            val numerosSorteados = NUMEROS_POSSIVEIS.shuffled().take(6).sorted()
+            val jogoFormatado = numerosSorteados.joinToString(" ") { numero ->
+                "%02d".format(numero)
             }
-
-            gravarJogos(jogosParaGravar)
-
-            val valorJogos = 4.50F * quantidadeJogos
-            println("Custo para realizar este(s) jogo(s): R$ $valorJogos")
-
-            if (valorJogos >= 30.0) {
-                println("Com este custo estes jogos podem ser apostados na Loterias CAIXA online")
-            } else {
-                println("Com este custo este(s) jogo(s) não pode(m) ser apostado(s) na Loterias CAIXA online")
-            }
+            "Jogo número $indice: $jogoFormatado"
         }
 
-        private fun gravarJogos(sb: StringBuilder) {
-            sb.setLength(sb.length - 1)
-            val dia = LocalDateTime.now().dayOfMonth
-            val mes = LocalDateTime.now().monthValue
-            val ano = LocalDateTime.now().year
-            val hora = LocalDateTime.now().hour
-            val minuto = LocalDateTime.now().minute
-            val segundo = LocalDateTime.now().second
-            val dataHorario = "$dia-$mes-$ano-${hora}h${minuto}m${segundo}s"
-            File("Apostas-Mega-Sena-$dataHorario.txt").writeText(sb.toString())
+        val conteudoArquivo = jogosGerados.joinToString("\n")
+
+        println(conteudoArquivo)
+
+        gravarJogos(conteudoArquivo)
+
+        val custoTotal = VALOR_JOGO * quantidadeJogos
+        println("\nCusto para realizar este(s) jogo(s): R$ %.2f".format(custoTotal))
+
+        if (custoTotal >= VALOR_MINIMO_ONLINE) {
+            println("Com este custo, estes jogos podem ser apostados na Loterias CAIXA online.")
+        } else {
+            println("Com este custo, este(s) jogo(s) não pode(m) ser apostado(s) na Loterias CAIXA online.")
+        }
+    }
+
+    private fun gravarJogos(conteudo: String) {
+        try {
+            val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy-HH'h'mm'm'ss's'"))
+            val arquivo = File("apostas/Apostas-Mega-Sena-$timestamp.txt")
+
+            arquivo.parentFile.mkdirs()
+
+            arquivo.writeText(conteudo)
+            println("Jogos gravados com sucesso em: ${arquivo.absolutePath}")
+        } catch (e: Exception) {
+            println("Ocorreu um erro ao gravar o arquivo: ${e.message}")
+            e.printStackTrace()
         }
     }
 }
