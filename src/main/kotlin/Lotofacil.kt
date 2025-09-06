@@ -46,7 +46,7 @@ class Lotofacil {
 
             gravarJogos(jogosParaGravar)
 
-            val valorJogos = 3 * quantidadeJogos
+            val valorJogos = 3.5 * quantidadeJogos
             println("Custo para realizar este(s) jogo(s): R$ $valorJogos")
 
             if (valorJogos >= 30.0) {
