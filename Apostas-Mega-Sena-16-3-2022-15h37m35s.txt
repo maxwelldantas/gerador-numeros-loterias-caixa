@@ -1,5 +1,0 @@
-Jogo número 1: 01 11 21 23 25 36
-Jogo número 2: 04 12 19 22 36 45
-Jogo número 3: 09 13 23 32 45 52
-Jogo número 4: 10 21 30 42 49 53
-Jogo número 5: 03 18 38 39 55 57

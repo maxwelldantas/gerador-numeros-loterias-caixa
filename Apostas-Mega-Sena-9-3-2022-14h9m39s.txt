@@ -1,4 +1,0 @@
-Jogo número 1: 17 34 38 53 56 57
-Jogo número 2: 10 17 38 40 48 53
-Jogo número 3: 05 13 16 37 46 58
-Jogo número 4: 19 28 29 33 47 57
