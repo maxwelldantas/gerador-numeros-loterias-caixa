@@ -19,7 +19,7 @@ fun main() {
     val quantidadeJogos = input.nextInt()
 
     when (jogo) {
-        1 -> MegaSena.jogosMegaSena(quantidadeJogos)
-        2 -> Lotofacil.jogosLotofacil(quantidadeJogos)
+        1 -> MegaSena.gerarJogos(quantidadeJogos)
+        2 -> Lotofacil.gerarJogos(quantidadeJogos)
     }
 }
